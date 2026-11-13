@@ -13,9 +13,9 @@ namespace Congregation\Core;
 final class Rota {
 
 	/**
-	 * Assignments.
+	 * Assignments, in the order they were made.
 	 *
-	 * @var list<array{0: int, 1: string, 2: int}>
+	 * @var array<int, array{0: int, 1: string, 2: int}>
 	 */
 	public array $assignments = array();
 

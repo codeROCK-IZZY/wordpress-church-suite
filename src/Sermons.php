@@ -20,7 +20,12 @@ final class Sermons {
 	 */
 	public static function register(): void {
 		add_action( 'init', array( self::class, 'types' ) );
-		add_action( 'init', static fn () => add_feed( 'sermons', array( self::class, 'feed' ) ) );
+		add_action(
+			'init',
+			static function (): void {
+				add_feed( 'sermons', array( self::class, 'feed' ) );
+			}
+		);
 		add_shortcode( 'congregation_sermons', array( self::class, 'shortcode' ) );
 		add_action( 'add_meta_boxes', array( self::class, 'meta_box' ) );
 		add_action( 'save_post_' . self::TYPE, array( self::class, 'save' ) );

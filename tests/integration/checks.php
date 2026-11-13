@@ -78,17 +78,6 @@ $check( 'requests are sent once', 0 === RotaService::ask( $from, $to ) );
 $rows   = Repo::assignments( $from, $to );
 $asked  = array_values( array_filter( $rows, static fn ( array $a ): bool => 'asked' === $a['status'] ) );
 $first  = $asked[0];
-$second = $asked[1];
-update_option(
-	'congregation_test_links',
-	array(
-		'accept'  => RotaService::link( $first, 'accept' ),
-		'decline' => RotaService::link( $second, 'decline' ),
-		'second'  => (int) $second['id'],
-		'person'  => (int) $second['person_id'],
-		'max'     => 0,
-	)
-);
 $forged = RotaService::answer( $first['id'] . '.' . str_repeat( '0', 64 ), 'decline' );
 $check( 'a forged link changes nothing', str_contains( $forged, 'not valid' ) && 'asked' === Repo::assignment( (int) $first['id'] )['status'] );
 
@@ -159,9 +148,19 @@ if ( $user ) {
 	$check( 'and nobody else\'s when logged out', str_contains( do_shortcode( '[congregation_my_rota]' ), 'Log in' ) );
 }
 
-$links        = (array) get_option( 'congregation_test_links' );
-$links['max'] = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(id) FROM %i', Schema::t( 'assignments' ) ) );
-update_option( 'congregation_test_links', $links );
+// Links for run.sh to open over HTTP, chosen last from places that still exist (erasure releases places).
+$open = array_values( array_filter( Repo::assignments( $from, $to ), static fn ( array $a ): bool => 'asked' === $a['status'] && (int) $a['person_id'] > 0 ) );
+$check( 'there are open requests left to answer over HTTP', count( $open ) >= 2 );
+update_option(
+	'congregation_test_links',
+	array(
+		'accept'  => RotaService::link( $open[0], 'accept' ),
+		'decline' => RotaService::link( $open[1], 'decline' ),
+		'second'  => (int) $open[1]['id'],
+		'person'  => (int) $open[1]['person_id'],
+		'max'     => (int) $wpdb->get_var( $wpdb->prepare( 'SELECT MAX(id) FROM %i', Schema::t( 'assignments' ) ) ),
+	)
+);
 
 echo $failures ? "\n{$failures} integration check(s) failed\n" : "\nall integration checks passed\n";
 if ( $failures ) {
