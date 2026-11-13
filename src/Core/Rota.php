@@ -39,6 +39,17 @@ final class Rota {
 	}
 
 	/**
+	 * Put a volunteer (0 for nobody) in an existing place.
+	 *
+	 * @param int $index     Assignment index.
+	 * @param int $volunteer Volunteer id.
+	 */
+	public function set( int $index, int $volunteer ): void {
+		[ $service, $role ]          = $this->assignments[ $index ];
+		$this->assignments[ $index ] = array( $service, $role, $volunteer );
+	}
+
+	/**
 	 * Is the volunteer already serving at this service (in any role)?
 	 *
 	 * @param int $volunteer Volunteer.

@@ -180,17 +180,17 @@ final class Scheduler {
 				}
 			}
 			foreach ( $blocking as $j ) {
-				[ $s2, $r2 ]                = $rota->assignments[ $j ];
-				$rota->assignments[ $j ][2] = 0; // Free that place, then see whether both can be filled.
+				[ $s2, $r2 ] = $rota->assignments[ $j ];
+				$rota->set( $j, 0 ); // Free that place, then see whether both can be filled.
 				if ( self::eligible( $rota, $v, $service, $role ) ) {
 					$w = $this->best( $rota, $rota->services[ $s2 ], $r2, $months, $v->id );
 					if ( $w ) {
-						$rota->assignments[ $j ][2]     = $w;
-						$rota->assignments[ $index ][2] = $v->id;
+						$rota->set( $j, $w );
+						$rota->set( $index, $v->id );
 						return;
 					}
 				}
-				$rota->assignments[ $j ][2] = $v->id;
+				$rota->set( $j, $v->id );
 			}
 		}
 	}
@@ -202,11 +202,11 @@ final class Scheduler {
 	 * @param int  $index Assignment index.
 	 */
 	public function replace( Rota $rota, int $index ): int {
-		[ $sid, $role, $was ]           = $rota->assignments[ $index ];
-		$rota->assignments[ $index ][2] = 0;
-		$months                         = count( array_unique( array_map( static fn ( Service $s ): string => $s->month(), $rota->services ) ) );
-		$w                              = $this->best( $rota, $rota->services[ $sid ], $role, $months, $was );
-		$rota->assignments[ $index ][2] = $w;
+		[ $sid, $role, $was ] = $rota->assignments[ $index ];
+		$rota->set( $index, 0 );
+		$months = count( array_unique( array_map( static fn ( Service $s ): string => $s->month(), $rota->services ) ) );
+		$w      = $this->best( $rota, $rota->services[ $sid ], $role, $months, $was );
+		$rota->set( $index, $w );
 		return $w;
 	}
 }

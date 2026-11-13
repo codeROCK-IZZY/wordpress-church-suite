@@ -91,7 +91,7 @@ final class Measure {
 				if ( 0 === $w ) {
 					--$after;
 					++$lost;
-					$rota->assignments[ $i ][2] = 0;
+					$rota->set( $i, 0 );
 				}
 			}
 		}
@@ -123,11 +123,11 @@ final class Measure {
 		}
 		// Baselines: the next person on the list who keeps the hard rules (a careful coordinator by phone).
 		return static function ( Rota $r, int $i ): int {
-			[ $sid, $role, $was ]    = $r->assignments[ $i ];
-			$r->assignments[ $i ][2] = 0;
+			[ $sid, $role, $was ] = $r->assignments[ $i ];
+			$r->set( $i, 0 );
 			foreach ( $r->volunteers as $v ) {
 				if ( $v->id !== $was && Scheduler::eligible( $r, $v, $r->services[ $sid ], $role ) ) {
-					$r->assignments[ $i ][2] = $v->id;
+					$r->set( $i, $v->id );
 					return $v->id;
 				}
 			}
