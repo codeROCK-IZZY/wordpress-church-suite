@@ -1,0 +1,164 @@
+{
+    "banks": {
+        "tuning": {
+            "label": "Tuning churches",
+            "churches": 15,
+            "methods": {
+                "teams": {
+                    "label": "Team spreadsheets (each leader rotates their own list)",
+                    "places": 4576,
+                    "filled": 0.9264,
+                    "filled_after_declines": 0.8912,
+                    "double_booked": 374,
+                    "over_limit": 802,
+                    "load_spread": 0.556,
+                    "unused": 0.0355,
+                    "consecutive": 0.2401,
+                    "household_split": 0.2044,
+                    "volunteers": 1100
+                },
+                "first": {
+                    "label": "One coordinator, first person who can",
+                    "places": 4576,
+                    "filled": 0.8866,
+                    "filled_after_declines": 0.8617,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.374,
+                    "unused": 0.2773,
+                    "consecutive": 0.3427,
+                    "household_split": 0.0553,
+                    "volunteers": 1100
+                },
+                "plugin": {
+                    "label": "This plugin",
+                    "places": 4576,
+                    "filled": 0.9045,
+                    "filled_after_declines": 0.8818,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.197,
+                    "unused": 0.0073,
+                    "consecutive": 0.108,
+                    "household_split": 0.015,
+                    "volunteers": 1100
+                }
+            }
+        },
+        "heldout": {
+            "label": "Held-out churches",
+            "churches": 40,
+            "methods": {
+                "teams": {
+                    "label": "Team spreadsheets (each leader rotates their own list)",
+                    "places": 12896,
+                    "filled": 0.9324,
+                    "filled_after_declines": 0.9,
+                    "double_booked": 1141,
+                    "over_limit": 2337,
+                    "load_spread": 0.567,
+                    "unused": 0.0314,
+                    "consecutive": 0.2527,
+                    "household_split": 0.2407,
+                    "volunteers": 3030
+                },
+                "first": {
+                    "label": "One coordinator, first person who can",
+                    "places": 12896,
+                    "filled": 0.885,
+                    "filled_after_declines": 0.8605,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.36,
+                    "unused": 0.2624,
+                    "consecutive": 0.3409,
+                    "household_split": 0.0561,
+                    "volunteers": 3030
+                },
+                "plugin": {
+                    "label": "This plugin",
+                    "places": 12896,
+                    "filled": 0.909,
+                    "filled_after_declines": 0.8848,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.19,
+                    "unused": 0.001,
+                    "consecutive": 0.1112,
+                    "household_split": 0.0106,
+                    "volunteers": 3030
+                }
+            }
+        },
+        "different": {
+            "label": "Very small and very large churches (held back)",
+            "churches": 10,
+            "methods": {
+                "teams": {
+                    "label": "Team spreadsheets (each leader rotates their own list)",
+                    "places": 4160,
+                    "filled": 0.963,
+                    "filled_after_declines": 0.9385,
+                    "double_booked": 362,
+                    "over_limit": 747,
+                    "load_spread": 0.617,
+                    "unused": 0.0215,
+                    "consecutive": 0.2313,
+                    "household_split": 0.2464,
+                    "volunteers": 1021
+                },
+                "first": {
+                    "label": "One coordinator, first person who can",
+                    "places": 4160,
+                    "filled": 0.9111,
+                    "filled_after_declines": 0.895,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.284,
+                    "unused": 0.2997,
+                    "consecutive": 0.3017,
+                    "household_split": 0.1788,
+                    "volunteers": 1021
+                },
+                "plugin": {
+                    "label": "This plugin",
+                    "places": 4160,
+                    "filled": 0.9192,
+                    "filled_after_declines": 0.9012,
+                    "double_booked": 0,
+                    "over_limit": 0,
+                    "load_spread": 0.142,
+                    "unused": 0,
+                    "consecutive": 0.1087,
+                    "household_split": 0,
+                    "volunteers": 1021
+                }
+            }
+        }
+    },
+    "checks": {
+        "heldout_double_booked_max": 0,
+        "heldout_filled_vs_first_min": 0.024,
+        "heldout_unused_max": 0.001,
+        "heldout_consecutive_vs_first_max": -0.2297,
+        "different_filled_vs_first_min": 0.0081,
+        "different_double_booked_max": 0
+    },
+    "limits": {
+        "heldout_double_booked_max": 0,
+        "heldout_filled_vs_first_min": 0,
+        "heldout_unused_max": 0.05,
+        "heldout_consecutive_vs_first_max": -0.1,
+        "different_filled_vs_first_min": -0.01,
+        "different_double_booked_max": 0
+    },
+    "passed": {
+        "heldout_double_booked_max": true,
+        "heldout_filled_vs_first_min": true,
+        "heldout_unused_max": true,
+        "heldout_consecutive_vs_first_max": true,
+        "different_filled_vs_first_min": true,
+        "different_double_booked_max": true
+    },
+    "ok": true
+}

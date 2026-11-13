@@ -1,0 +1,23 @@
+.congregation .cg-inline { display: inline-block; margin: 0 6px 10px 0; }
+.congregation .cg-muted { color: #646970; font-weight: 400; }
+.congregation .cg-scroll { overflow-x: auto; }
+.congregation .cg-rota th, .congregation .cg-rota td { white-space: nowrap; vertical-align: top; }
+.congregation .cg-rota thead th { text-align: center; }
+.congregation .cg-cell { padding: 3px 8px; margin: 2px 0; border-radius: 4px; background: #f6f7f7; }
+.congregation .cg-cell small { color: #646970; margin-left: 4px; }
+.congregation .cg-confirmed { background: #edfaef; }
+.congregation .cg-asked { background: #f0f6fc; }
+.congregation .cg-unfilled { background: #fcf0f1; color: #b32d2e; }
+.congregation .cg-cols { display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start; }
+.congregation .cg-card { background: #fff; border: 1px solid #dcdcde; border-radius: 6px; padding: 4px 18px 14px; }
+.congregation .cg-check { display: inline-block; margin: 2px 12px 2px 0; }
+.congregation .num { text-align: right; }
+.congregation .cg-refunded td { color: #8c8f94; text-decoration: line-through; }
+.congregation .cg-total td { font-weight: 700; }
+.cg-statement { max-width: 760px; background: #fff; padding: 20px 28px; border: 1px solid #dcdcde; }
+@media print {
+	#adminmenumain, #wpadminbar, #wpfooter, .cg-noprint, .notice { display: none !important; }
+	#wpcontent { margin-left: 0 !important; }
+	.cg-statement { border: 0; }
+}
+@media (max-width: 960px) { .congregation .cg-cols { grid-template-columns: 1fr; } }

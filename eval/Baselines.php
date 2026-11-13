@@ -34,7 +34,8 @@ final class Baselines {
 				$list = array_values( array_filter( $rota->volunteers, static fn ( $v ): bool => $v->can( $role ) ) );
 				for ( $i = 0; $i < $n; $i++ ) {
 					$pick = 0;
-					for ( $k = 0; $k < count( $list ); $k++ ) { // phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed
+					$size = count( $list );
+					for ( $k = 0; $k < $size; $k++ ) {
 						$idx = ( ( $next[ $role ] ?? 0 ) + $k ) % max( 1, count( $list ) );
 						$v   = $list[ $idx ];
 						if ( $v->free_on( $service->date ) && ! self::team_has( $rota, $service, $role, $v->id ) && self::team_month( $rota, $role, $v->id, $service ) < $v->per_month ) {

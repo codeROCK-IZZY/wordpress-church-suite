@@ -10,10 +10,11 @@
  *   share of their offered capacity already used
  *   + spacing:    if they serve the week before or after
  *   + household:  if they want to serve with their household and it is at another service that day
- *   + preference: if it is not their preferred service time
+ *   + preference: if it is not their preferred service time (and a little less if it is)
  *   + same day:   if they already serve at another service that day
  * Then a repair pass fills empty places by moving people: a person who could fill an empty place but is at their monthly
- * limit, or is already in another role at that service, hands that other place to someone else who can take it.
+ * limit, or is already in another role at that service, hands that other place to someone else who can take it. Only
+ * places made in the same plan are moved; places that already existed are left alone.
  *
  * @package Congregation
  */
@@ -24,6 +25,12 @@ namespace Congregation\Core;
  * Scheduler.
  */
 final class Scheduler {
+
+	/**
+	 * Index of the first assignment made by the current plan: places that existed before (possibly confirmed by the
+	 * people in them) are never moved by the repair pass.
+	 */
+	private int $first_new = 0;
 
 	/**
 	 * Constructor. Weights were chosen on simulated tuning churches (eval/).
@@ -82,8 +89,8 @@ final class Scheduler {
 				$s -= $this->household / 2;
 			}
 		}
-		if ( '' !== $v->prefers && $v->prefers !== $service->time ) {
-			$s += $this->preference;
+		if ( '' !== $v->prefers ) {
+			$s += $v->prefers === $service->time ? -$this->preference / 2 : $this->preference;
 		}
 		return $s;
 	}
@@ -106,7 +113,8 @@ final class Scheduler {
 			}
 		}
 		sort( $slots );
-		$empty = array();
+		$this->first_new = count( $rota->assignments );
+		$empty           = array();
 		foreach ( $slots as [ , , , $sid, $role ] ) {
 			$best = $this->best( $rota, $rota->services[ $sid ], $role, $months );
 			$rota->add( $sid, $role, $best );
@@ -164,15 +172,15 @@ final class Scheduler {
 			// Places this person holds that block them: same service (another role) or same month (at the limit).
 			$blocking = array();
 			foreach ( $rota->assignments as $j => [ $s2, , $v2 ] ) {
-				if ( $v2 !== $v->id ) {
+				if ( $v2 !== $v->id || $j < $this->first_new ) {
 					continue;
 				}
-				if ( $s2 === $sid || $rota->count_in_month( $v->id, $service->month() ) >= $v->per_month && $rota->services[ $s2 ]->month() === $service->month() ) {
+				if ( $s2 === $sid || ( $rota->count_in_month( $v->id, $service->month() ) >= $v->per_month && $rota->services[ $s2 ]->month() === $service->month() ) ) {
 					$blocking[] = $j;
 				}
 			}
 			foreach ( $blocking as $j ) {
-				[ $s2, $r2 ]                 = $rota->assignments[ $j ];
+				[ $s2, $r2 ]                = $rota->assignments[ $j ];
 				$rota->assignments[ $j ][2] = 0; // Free that place, then see whether both can be filled.
 				if ( self::eligible( $rota, $v, $service, $role ) ) {
 					$w = $this->best( $rota, $rota->services[ $s2 ], $r2, $months, $v->id );

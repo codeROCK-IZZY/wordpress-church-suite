@@ -116,7 +116,7 @@ final class Church {
 				$hh > 0 && $hh_tog,
 				count( $times ) > 1 && mt_rand( 0, 2 ) === 0 ? $times[ mt_rand( 0, count( $times ) - 1 ) ] : ''
 			);
-			$this->decline[ $i ] = array( 0.05, 0.1, 0.1, 0.2, 0.35 )[ mt_rand( 0, 4 ) ];
+			$this->decline[ $i ]    = array( 0.05, 0.1, 0.1, 0.2, 0.35 )[ mt_rand( 0, 4 ) ];
 		}
 	}
 

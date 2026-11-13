@@ -1,0 +1,10 @@
+parameters:
+	level: 8
+	paths:
+		- congregation.php
+		- uninstall.php
+		- src
+		- eval
+	treatPhpDocTypesAsCertain: false
+	bootstrapFiles:
+		- tests/phpstan-constants.php

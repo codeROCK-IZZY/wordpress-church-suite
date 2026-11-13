@@ -30,9 +30,9 @@ final class Measure {
 		$seen   = array();
 		foreach ( $rota->assignments as [ $s, , $v ] ) {
 			if ( $v ) {
-				$key           = $s . ':' . $v;
-				$double       += isset( $seen[ $key ] ) ? 1 : 0;
-				$seen[ $key ]  = true;
+				$key          = $s . ':' . $v;
+				$double      += isset( $seen[ $key ] ) ? 1 : 0;
+				$seen[ $key ] = true;
 			}
 		}
 		$over   = 0;
@@ -50,7 +50,8 @@ final class Measure {
 			$unused += 0 === $n ? 1 : 0;
 			$dates   = array_values( array_unique( $rota->dates( $v->id ) ) );
 			sort( $dates );
-			for ( $i = 1; $i < count( $dates ); $i++ ) { // phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed
+			$n_dates = count( $dates );
+			for ( $i = 1; $i < $n_dates; $i++ ) {
 				$consec += 7 === (int) ( new \DateTimeImmutable( $dates[ $i - 1 ] ) )->diff( new \DateTimeImmutable( $dates[ $i ] ) )->format( '%a' ) ? 1 : 0;
 			}
 			$total += count( $dates );
@@ -65,7 +66,7 @@ final class Measure {
 				$times = $rota->household_times( $v->household, $d, $v->id );
 				if ( $times ) {
 					++$tog;
-					$mine   = array();
+					$mine = array();
 					foreach ( $rota->assignments as [ $s, , $x ] ) {
 						if ( $x === $v->id && $rota->services[ $s ]->date === $d ) {
 							$mine[] = $rota->services[ $s ]->time;
@@ -95,17 +96,17 @@ final class Measure {
 			}
 		}
 		return array(
-			'places'        => $places,
-			'filled'        => $filled,
-			'double_booked' => $double,
-			'over_limit'    => $over,
-			'load_spread'   => round( sqrt( $var / max( 1, count( $loads ) ) ), 4 ),
-			'unused'        => $unused,
-			'volunteers'    => count( $rota->volunteers ),
-			'consecutive'   => $consec,
-			'served_dates'  => $total,
-			'household_split' => $split,
-			'household_dates' => $tog,
+			'places'                => $places,
+			'filled'                => $filled,
+			'double_booked'         => $double,
+			'over_limit'            => $over,
+			'load_spread'           => round( sqrt( $var / max( 1, count( $loads ) ) ), 4 ),
+			'unused'                => $unused,
+			'volunteers'            => count( $rota->volunteers ),
+			'consecutive'           => $consec,
+			'served_dates'          => $total,
+			'household_split'       => $split,
+			'household_dates'       => $tog,
 			'filled_after_declines' => $after,
 		);
 	}
@@ -122,7 +123,7 @@ final class Measure {
 		}
 		// Baselines: the next person on the list who keeps the hard rules (a careful coordinator by phone).
 		return static function ( Rota $r, int $i ): int {
-			[ $sid, $role, $was ]       = $r->assignments[ $i ];
+			[ $sid, $role, $was ]    = $r->assignments[ $i ];
 			$r->assignments[ $i ][2] = 0;
 			foreach ( $r->volunteers as $v ) {
 				if ( $v->id !== $was && Scheduler::eligible( $r, $v, $r->services[ $sid ], $role ) ) {
